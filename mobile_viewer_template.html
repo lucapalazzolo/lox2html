@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#071827">
+<title>__HTML_TITLE__ | 3D</title>
+<style>
+:root{color-scheme:dark;--bg:#071522;--panel:#102333;--panel2:#183246;--border:#2a4858;--ink:#eaf6fa;--soft:#8daab9;--primary:#57cfd6;--mine:#f1aa6a;--cave:#57d5ba;--all:#57cfd6;--dock:70px;--safe:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}[hidden]{display:none!important}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;-webkit-tap-highlight-color:transparent}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+#app{height:100vh;height:100dvh;width:100%;position:relative;overflow:hidden;background:radial-gradient(circle at 52% 40%,#152f42,#06131f 76%)}
+#plot{position:absolute;inset:0;width:100%;height:100%;touch-action:none;z-index:0}
+.top{position:absolute;top:0;left:0;right:0;z-index:5;min-height:79px;padding:calc(14px + env(safe-area-inset-top,0px)) 17px 15px;display:flex;justify-content:space-between;align-items:center;gap:12px;pointer-events:none;background:linear-gradient(180deg,#071522f7 0%,#071522c9 61%,transparent 100%)}
+.brand{min-width:0}.kicker{color:#8bb4c3;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.15em}.name{font-size:clamp(17px,4.7vw,24px);font-weight:750;line-height:1.3;max-width:min(68vw,560px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-.028em}.sub{font-size:11px;color:var(--soft);margin-top:3px}
+.topActions{display:flex;gap:8px;pointer-events:auto}.round{background:#153449e8;border:1px solid #376178;color:#cfe7ef;min-width:44px;height:44px;border-radius:13px;display:grid;place-items:center;font-size:20px}
+.tip{position:absolute;left:50%;transform:translateX(-50%);top:calc(97px + env(safe-area-inset-top,0px));z-index:4;background:#152b3be3;border:1px solid #34546a;border-radius:999px;padding:9px 15px;font-size:11px;color:#bdd5df;white-space:nowrap;box-shadow:0 7px 24px #0003;pointer-events:none}
+.zoomControls{position:absolute;right:12px;bottom:calc(var(--dock) + var(--safe) + 111px);z-index:5;display:flex;flex-direction:column;gap:9px;pointer-events:auto}
+.zoomControls button{width:56px;height:56px;min-width:56px;min-height:56px;border:1px solid #5c8799;border-radius:16px;background:#143649ef;color:#edfaff;font-weight:650;font-size:31px;line-height:1;display:grid;place-items:center;box-shadow:0 4px 16px #0007;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.zoomControls button:active{background:#2d6376;transform:scale(.96)}
+@media(max-height:510px) and (orientation:landscape){.zoomControls{bottom:calc(var(--dock) + var(--safe) + 8px);right:10px}.zoomControls button{width:46px;height:46px;min-width:46px;min-height:46px;font-size:27px}}
+.dock{position:absolute;bottom:0;left:0;right:0;z-index:10;height:calc(var(--dock) + var(--safe));padding:6px 12px calc(6px + var(--safe));display:grid;grid-template-columns:repeat(4,1fr);align-items:stretch;gap:5px;background:#091a29f5;border-top:1px solid #355161;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.dock button{min-height:55px;border:0;border-radius:13px;background:transparent;color:#a6c4d2;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;font-size:11px;font-weight:600}.dock button.active{background:#193b4c;color:#eaffff}.dock .glyph{font-size:20px;line-height:20px;font-weight:500}
+.scrim{position:absolute;inset:0;z-index:6;background:#0007;opacity:0;pointer-events:none;transition:opacity .18s}.scrim.open{opacity:1;pointer-events:auto}
+.sheet{position:absolute;z-index:8;left:0;right:0;bottom:calc(var(--dock) + var(--safe));max-height:min(64vh,570px);max-height:min(64dvh,570px);background:#102333f7;border-radius:19px 19px 0 0;border-top:1px solid #3b6472;box-shadow:0 -15px 35px #0008;transform:translateY(110%);transition:transform .2s;display:flex;flex-direction:column;overflow:hidden}
+.sheet.open{transform:translateY(0)}.sheethead{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px 19px 12px;flex-shrink:0;border-bottom:1px solid #2a4352}.sheethead strong{font-size:16px}.close{background:#1c3546;border:1px solid #335369;border-radius:11px;color:#ddebf1;min-width:40px;min-height:40px;font-size:22px}.pane{overflow:auto;overscroll-behavior:contain;padding:13px 16px 20px;min-height:0;flex:1}.pane[hidden]{display:none!important}
+.search{width:100%;border:1px solid #3b596b;background:#0c1c2b;color:#effbff;border-radius:12px;height:48px;padding:0 15px;font-size:16px;outline:none}.search::placeholder{color:#7897a8}
+.hint{font-size:12px;color:var(--soft);line-height:1.5;margin:7px 0 13px}.item{width:100%;border:1px solid #274658;color:#d6edf4;background:#132b3d;min-height:56px;border-radius:13px;padding:10px 12px;display:flex;align-items:center;gap:11px;text-align:left;margin:8px 0}.item:active{background:#21475c}.item .symbol{width:9px;height:9px;border-radius:50%;background:var(--all);flex:none}.item .symbol.cave{background:var(--cave)}.item .symbol.mine{background:var(--mine)}.itemname{flex:1;min-width:0}.itemname strong{display:block;font-size:14px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.itemname small{display:block;font-size:11px;color:var(--soft);margin-top:3px}.item .arr{font-size:17px;color:#779eae}.empty{padding:20px 10px;color:var(--soft);text-align:center}
+.control{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 4px;min-height:54px;border-bottom:1px solid #274354}.control label{display:flex;align-items:center;gap:9px;font-size:14px;color:#e1f1f6}.control input[type=checkbox]{accent-color:#61cbd2;width:22px;height:22px}.control select{color:#e3f5fa;background:#1b394b;border:1px solid #3d6070;padding:10px;border-radius:10px;min-width:112px;font-size:14px}.control .range{width:140px;accent-color:#68c8d0}.mini{color:var(--soft);font-size:12px}.pillButtons{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:9px 0 18px}.choice{border:1px solid #426274;background:#18364a;color:#cae2eb;min-height:49px;border-radius:13px;font-size:13px;font-weight:650}.choice.active{background:#226074;border-color:#5fb8c5;color:white}.legendTitle{font-size:11px;letter-spacing:.11em;color:#8fb7c5;font-weight:700;text-transform:uppercase;padding:15px 3px 3px}
+.selection{position:absolute;left:12px;right:12px;bottom:calc(var(--dock) + var(--safe) + 12px);z-index:4;border:1px solid #41677a;border-radius:14px;padding:12px 13px;display:flex;gap:12px;align-items:center;background:#102d40ec;backdrop-filter:blur(12px);box-shadow:0 6px 24px #0006}.selection[hidden]{display:none!important}.selection .selText{flex:1;min-width:0}.selName{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.selMeta{font-size:11px;color:#afcad6;margin-top:5px}.smallBtn{border:1px solid #4b788c;border-radius:10px;background:#1a4355;color:#e4f5fa;font-weight:660;min-height:40px;padding:0 11px;font-size:12px}.smallBtn.active{background:#2b6a72}.selectedClose{background:transparent;color:#a6c3d0;border:0;font-size:20px;min-width:24px}
+.loading[hidden]{display:none!important}.loading{position:absolute;inset:0;z-index:12;display:flex;justify-content:center;align-items:center;gap:12px;flex-direction:column;background:var(--bg);font-size:14px;color:#d0ebf5;padding:26px;text-align:center}.spinner{width:32px;height:32px;border:2px solid #23485a;border-top-color:#67cfdb;border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.error{color:#ffc1b8;max-width:390px;line-height:1.6}
+@media(min-width:800px){.dock{left:50%;right:auto;transform:translateX(-50%);width:400px;border-radius:16px 16px 0 0;border:1px solid #36586c;border-bottom:0}.sheet{left:50%;right:auto;transform:translate(-50%,110%);width:min(440px,95vw)}.sheet.open{transform:translate(-50%,0)}.selection{left:50%;right:auto;transform:translateX(-50%);width:min(440px,95vw)}.tip{top:95px}}
+@media(max-height:510px) and (orientation:landscape){.sheet{max-height:calc(100dvh - 70px)}.top{padding-top:8px}.sub{display:none}.tip{display:none}}
+@media(prefers-reduced-motion:reduce){.scrim,.sheet{transition:none}.spinner{animation:none}}
+
+/* Touch joystick: visually separate from the Plotly canvas and zoom controls. */
+.joystick{position:absolute;left:12px;bottom:calc(var(--dock) + var(--safe) + 108px);z-index:5;width:118px;pointer-events:auto;display:flex;flex-direction:column;align-items:center;gap:5px}
+.joyPad{position:relative;display:block;width:110px;height:110px;border-radius:50%;border:1px solid #5e8b9c;background:#103044e8;box-shadow:0 5px 22px #0009,inset 0 0 0 9px #0a233180;touch-action:none;-webkit-user-select:none;user-select:none;overscroll-behavior:contain;cursor:grab;outline-offset:4px;padding:0;appearance:none;-webkit-appearance:none}
+.joyPad:active{cursor:grabbing}.joyPad:focus-visible{outline:2px solid #88e1ec}
+.joyCross{position:absolute;inset:10px;pointer-events:none;opacity:.73;background:linear-gradient(90deg,transparent calc(50% - .5px),#507b8d calc(50% - .5px),#507b8d calc(50% + .5px),transparent calc(50% + .5px)),linear-gradient(0deg,transparent calc(50% - .5px),#507b8d calc(50% - .5px),#507b8d calc(50% + .5px),transparent calc(50% + .5px));border-radius:50%}
+.joyArrow{position:absolute;color:#9bc9d5;font-size:15px;pointer-events:none;line-height:1}.joyArrow.n{left:50%;top:9px;transform:translateX(-50%)}.joyArrow.s{left:50%;bottom:9px;transform:translateX(-50%)}.joyArrow.w{left:10px;top:50%;transform:translateY(-50%)}.joyArrow.e{right:10px;top:50%;transform:translateY(-50%)}
+.joyThumb{position:absolute;left:50%;top:50%;width:42px;height:42px;border-radius:50%;border:2px solid #95e1eb;background:linear-gradient(145deg,#327b90,#195266);box-shadow:0 3px 10px #000a,inset 0 1px 2px #d6f7ff30;transform:translate(-50%,-50%) translate(0px,0px);pointer-events:none;will-change:transform}
+.joyLabel{font-size:10px;color:#b1cbd6;background:#082332db;border:1px solid #365c6d;border-radius:9px;padding:3px 7px;white-space:nowrap}
+@media(max-height:510px) and (orientation:landscape){.joystick{bottom:calc(var(--dock) + var(--safe) + 6px);left:8px;width:88px}.joyPad{width:84px;height:84px}.joyThumb{width:33px;height:33px}.joyArrow{font-size:12px}.joyArrow.n{top:5px}.joyArrow.s{bottom:5px}.joyArrow.w{left:6px}.joyArrow.e{right:6px}.joyLabel{display:none}}
+</style>
+<script>/*__PLOTLY_JS__*/</script>
+<script id="model-json" type="application/json">/*__MODEL_JSON__*/</script>
+</head>
+<body>
+<div id="app">
+<div id="plot" role="img" aria-label="Scena tridimensionale interattiva"></div>
+<header class="top"><div class="brand"><div class="kicker">Visualizzatore 3D</div><div id="siteName" class="name">__HTML_TITLE__</div><div class="sub" id="summary">Caricamento...</div></div><div class="topActions"><button id="resetTop" class="round" title="Inquadra tutto" aria-label="Inquadra tutto">⌖</button></div></header>
+<div class="tip" id="tip">Un dito: ruota · Joystick: sposta</div>
+<div class="joystick" aria-label="Traslazione vista 3D">
+  <button id="joyPad" class="joyPad" type="button" aria-label="Joystick: trascina per spostare il modello. Usa le frecce da tastiera se disponibili." title="Trascina per spostare il modello">
+    <span class="joyCross"></span><span class="joyArrow n">▴</span><span class="joyArrow s">▾</span><span class="joyArrow w">◂</span><span class="joyArrow e">▸</span><span id="joyThumb" class="joyThumb"></span>
+  </button>
+  <span class="joyLabel">Sposta</span>
+</div>
+<div class="zoomControls" role="group" aria-label="Zoom del modello"><button id="zoomIn" type="button" aria-label="Zoom avanti" title="Zoom avanti">+</button><button id="zoomOut" type="button" aria-label="Zoom indietro" title="Zoom indietro">−</button></div>
+<div class="selection" id="selection" hidden><div class="selText"><div class="selName" id="selName"></div><div class="selMeta" id="selMeta"></div></div><button class="smallBtn" id="solo">Isola</button><button class="selectedClose" id="dismissSelection" title="Chiudi" aria-label="Chiudi selezione">×</button></div>
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Pannello strumenti">
+  <div class="sheethead"><strong id="sheetTitle">Esplora</strong><button id="closeSheet" class="close" aria-label="Chiudi pannello">×</button></div>
+  <section class="pane" data-pane="browse" id="browsePane"><input class="search" id="search" type="search" placeholder="Cerca un rilievo…" autocomplete="off"><p class="hint" id="browseHint">Seleziona un rilievo per inquadrarlo.</p><div id="items"></div></section>
+  <section class="pane" data-pane="layers" hidden>
+    <div class="control"><label for="meshes">Volumi 3D</label><input type="checkbox" id="meshes" checked></div>
+    <div class="control"><label for="lines">Poligonali</label><input type="checkbox" id="lines" checked></div>
+    <div class="control"><label for="contours">Curve di livello</label><input type="checkbox" id="contours" checked></div>
+    <div class="control"><label for="entrances">Ingressi</label><input type="checkbox" id="entrances" checked></div>
+    <div class="control" id="intervalRow"><label for="interval">Equidistanza</label><select id="interval"><option value="10">10 m</option><option value="20" selected>20 m</option><option value="50">50 m</option></select></div>
+    <div class="control"><label for="opacity">Opacità volumi</label><input class="range" id="opacity" type="range" min="12" max="90" value="38"><span class="mini" id="opacityValue">38%</span></div>
+    <div id="categoryControls" hidden><div class="legendTitle">Categorie</div><div class="control" id="caveRow" hidden><label for="caves">Grotte</label><input type="checkbox" id="caves" checked></div><div class="control" id="mineRow" hidden><label for="mines">Miniere</label><input type="checkbox" id="mines" checked></div><div class="control" id="allRow" hidden><label for="neutral">Altri rilievi</label><input type="checkbox" id="neutral" checked></div></div>
+  </section>
+  <section class="pane" data-pane="view" hidden>
+    <div class="legendTitle">Orientamento</div>
+    <div class="pillButtons"><button class="choice active" data-view="3d">3D</button><button class="choice" data-view="top">Pianta</button><button class="choice" data-view="side">Sezione</button></div>
+    <div class="legendTitle">Scala verticale</div>
+    <div class="pillButtons"><button class="choice active" data-z="1">1×</button><button class="choice" data-z="2">2×</button><button class="choice" data-z="3">3×</button></div>
+    <p class="hint">Un dito sul modello ruota. Il joystick a sinistra trasla rigidamente la vista; rilascia per fermarti. I pulsanti + e − a destra controllano lo zoom.</p>
+    <button id="fitScene" class="choice" style="width:100%">Inquadra tutto</button>
+  </section>
+</div>
+<nav class="dock" aria-label="Strumenti"><button data-tab="browse" id="navBrowse"><span class="glyph">⌕</span>Esplora</button><button data-tab="layers" id="navLayers"><span class="glyph">▧</span>Livelli</button><button data-tab="view" id="navView"><span class="glyph">◉</span>Vista</button><button id="navReset"><span class="glyph">↺</span>Reset</button></nav>
+<div class="loading" id="loading"><div class="spinner"></div><div>Preparazione del modello 3D</div><small id="loadInfo" style="color:#8daab9">Lettura delle geometrie</small></div>
+</div>
+<script>
+(()=>{
+'use strict';
+const D=JSON.parse(document.getElementById('model-json').textContent);
+const $=id=>document.getElementById(id);
+const P=$('plot'),terrain=D.meta.terrain||{present:false},origin=D.meta.origin||[0,0,0];
+const groups=D.groups||[],byId=Object.fromEntries(groups.map(g=>[g.id,g]));
+const categories=D.meta.categories||{all:groups.length,cave:0,mine:0};
+const start=(D.meta.mobile||{}).start_mode||'balanced';
+const options={mesh:start!=='light',lines:true,contours:!!terrain.present,entrances:true,
+  interval:start==='light'?50:start==='detailed'?10:20,opacity:.38,exag:1,solo:null,selected:null,
+  kinds:{all:true,cave:true,mine:true}};
+const fmt=(n,dec=0)=>Number(n).toLocaleString('it-IT',{maximumFractionDigits:dec});
+const colors={all:'#57cfd6',cave:'#57d5ba',mine:'#efaa66'};
+const meshColors={all:'#46a9c0',cave:'#31a69c',mine:'#bd8051'};
+const assets=[],metadata=[];
+function push(tr,meta){assets.push(tr);metadata.push(meta)}
+for(const a of D.geometry){
+ const kind=colors[a.kind]?a.kind:'all';
+ if(a.type==='mesh'){
+  push({type:'mesh3d',name:a.name,x:a.x,y:a.y,z:a.z,i:a.i,j:a.j,k:a.k,
+    color:meshColors[kind],opacity:options.opacity,flatshading:false,
+    lighting:{ambient:.7,diffuse:.56,roughness:.9,specular:.08},lightposition:{x:100,y:160,z:2400},
+    hoverinfo:'skip',showlegend:false}, {type:'mesh',gid:a.gid,kind});
+ }else if(a.type==='line'){
+  push({type:'scatter3d',mode:'lines',name:a.name,x:a.x,y:a.y,z:a.z,
+    line:{width:3.2,color:colors[kind]},connectgaps:false,hoverinfo:'skip',showlegend:false},
+    {type:'line',gid:a.gid,kind});
+ }
+}
+const contourColors={100:{color:'#b2c5d0',width:3.0},50:{color:'#6f95a7',width:2},20:{color:'#567a8b',width:1.7},10:{color:'#395666',width:1.1}};
+for(const c of D.contours||[]){
+ push({type:'scatter3d',mode:'lines',name:'Isoipse '+c.tier+' m',x:c.x,y:c.y,z:c.z,
+       line:contourColors[c.tier]||contourColors[20],connectgaps:false,hoverinfo:'skip',showlegend:false},
+      {type:'contour',tier:Number(c.tier)});
+}
+if((D.entrances||[]).length){
+ push({type:'scatter3d',mode:'markers',name:'Ingressi',
+   x:D.entrances.map(e=>e.x),y:D.entrances.map(e=>e.y),z:D.entrances.map(e=>e.z),
+   text:D.entrances.map(e=>e.name),hovertemplate:'%{text}<extra></extra>',
+   marker:{size:4,color:'#f6df94',symbol:'diamond'},showlegend:false},{type:'entrance'});
+}
+function visible(m){
+ if(m.type==='contour')return options.contours &&
+   (options.interval===10||m.tier===100||(options.interval===20&&m.tier===20)||(options.interval===50&&m.tier===50));
+ if(m.type==='entrance')return options.entrances;
+ if(options.solo!==null&&m.gid!==options.solo)return false;
+ if(byId[m.gid]&&byId[m.gid].hidden)return false;
+ if(!options.kinds[m.kind])return false;
+ return m.type==='mesh'?options.mesh:options.lines;
+}
+assets.forEach((tr,i)=>tr.visible=visible(metadata[i]));
+const xs=[],ys=[],zs=[];
+for(const g of groups){const b=g.bounds;if(b&&b[0]<1e11){xs.push(b[0],b[3]);ys.push(b[1],b[4]);zs.push(b[2],b[5])}}
+for(const e of D.entrances||[]){xs.push(e.x);ys.push(e.y);zs.push(e.z)}
+if(terrain.present){const c=terrain.calibration;const width=terrain.width-1,height=terrain.height-1;
+ for(const ij of [[0,0],[width,0],[0,height],[width,height]]){
+  xs.push(c[0]+ij[0]*c[2]+ij[1]*c[3]-origin[0]);
+  ys.push(c[1]+ij[0]*c[4]+ij[1]*c[5]-origin[1]);}
+ zs.push(terrain.min_elevation,terrain.max_elevation);
+}
+function range(v){const good=v.filter(Number.isFinite);if(!good.length)return[-50,50];
+ const lo=Math.min(...good),hi=Math.max(...good);return Math.abs(hi-lo)<1e-6?[lo-50,hi+50]:[lo,hi]}
+const bounds={x:range(xs),y:range(ys),z:range(zs)};
+const span=Math.max(1,bounds.x[1]-bounds.x[0],bounds.y[1]-bounds.y[0]);
+const camera={eye:{x:1.62,y:-1.67,z:1.04},up:{x:0,y:0,z:1},center:{x:0,y:0,z:0}};
+const views={
+ '3d':camera,
+ top:{eye:{x:0,y:0,z:2.65},up:{x:0,y:1,z:0},center:{x:0,y:0,z:0}},
+ side:{eye:{x:0,y:-2.65,z:.02},up:{x:0,y:0,z:1},center:{x:0,y:0,z:0}}
+};
+const axis=(title,extent)=>({title:{text:title,font:{size:10,color:'#91b1c0'}},range:[...extent],
+ gridcolor:'#254154',zerolinecolor:'#395668',backgroundcolor:'#0d2031',showbackground:true,
+ tickfont:{size:9,color:'#7295a8'},showspikes:false});
+function aspect(){return{x:(bounds.x[1]-bounds.x[0])/span,y:(bounds.y[1]-bounds.y[0])/span,
+ z:(bounds.z[1]-bounds.z[0])/span*options.exag}}
+const layout={paper_bgcolor:'#071522',plot_bgcolor:'#071522',margin:{l:0,r:0,t:0,b:0},showlegend:false,
+ scene:{xaxis:axis('E (m)',bounds.x),yaxis:axis('N (m)',bounds.y),zaxis:axis(D.meta.z_label||'Z (m)',bounds.z),
+  camera,aspectmode:'manual',aspectratio:aspect(),dragmode:'orbit',bgcolor:'#071522',uirevision:'mobile-scene'},
+ hoverlabel:{bgcolor:'#15354a',font:{color:'#f2fbff',size:13}},uirevision:'mobile-layout'};
+const config={responsive:true,displayModeBar:false,scrollZoom:false,showTips:false,
+ plotGlPixelRatio:Math.min(window.devicePixelRatio||1,1.5)};
+// ZOOM_MATH_START — pure helper, also exercised by the Node regression suite.
+function scaledCamera(source,factor){
+ const eye=source.eye||{x:1.62,y:-1.67,z:1.04};
+ const distance=Math.hypot(eye.x,eye.y,eye.z);
+ if(!Number.isFinite(distance)||distance<1e-8||!Number.isFinite(factor)||factor<=0)return source;
+ const target=Math.max(.16,Math.min(24,distance*factor));
+ const k=target/distance;
+ return {...source,eye:{x:eye.x*k,y:eye.y*k,z:eye.z*k}};
+}
+// ZOOM_MATH_END
+function zoomBy(factor){
+ if(!P.data)return;
+ // Take the current Plotly camera, so zoom preserves any user rotation or view mode.
+ const active=(P.layout&&P.layout.scene&&P.layout.scene.camera)||camera;
+ return Plotly.relayout(P,{'scene.camera':scaledCamera(active,factor)});
+}
+$('zoomIn').addEventListener('click',()=>zoomBy(1/1.36));
+$('zoomOut').addEventListener('click',()=>zoomBy(1.36));
+// JOYSTICK_MATH_START — pure vector camera pan (the model coordinates remain unchanged).
+function panCamera(source,rightOnScreen,downOnScreen){
+ const eye=source.eye||{x:1.62,y:-1.67,z:1.04};
+ const up=source.up||{x:0,y:0,z:1};
+ const center=source.center||{x:0,y:0,z:0};
+ const cross=(a,b)=>({x:a.y*b.z-a.z*b.y,y:a.z*b.x-a.x*b.z,z:a.x*b.y-a.y*b.x});
+ const unit=v=>{const n=Math.hypot(v.x,v.y,v.z);return n>1e-10?{x:v.x/n,y:v.y/n,z:v.z/n}:null};
+ const forward=unit({x:-eye.x,y:-eye.y,z:-eye.z});
+ if(!forward)return source;
+ let side=unit(cross(forward,up));
+ if(!side)side=unit(cross(forward,Math.abs(forward.z)<.9?{x:0,y:0,z:1}:{x:0,y:1,z:0}));
+ const vertical=side&&unit(cross(side,forward));
+ if(!side||!vertical||!Number.isFinite(rightOnScreen)||!Number.isFinite(downOnScreen))return source;
+ // Move camera TARGET opposite to the apparent screen displacement of the model.
+ const dx=-rightOnScreen,dy=downOnScreen;
+ return {...source,center:{x:center.x+dx*side.x+dy*vertical.x,
+  y:center.y+dx*side.y+dy*vertical.y,z:center.z+dx*side.z+dy*vertical.z}};
+}
+// JOYSTICK_MATH_END
+// A continuous, throttled pointer joystick. Do not modify trace geometry or axes.
+const joyPad=$('joyPad'),joyThumb=$('joyThumb');
+let joyPointer=null,joyX=0,joyY=0,joyFrame=0,joyLast=0,joyBusy=false;
+function joyVector(clientX,clientY){
+ const r=joyPad.getBoundingClientRect();
+ const radius=Math.max(15,Math.min(r.width,r.height)*.32);
+ let x=(clientX-(r.left+r.width/2))/radius;
+ let y=(clientY-(r.top+r.height/2))/radius;
+ const mag=Math.hypot(x,y);if(mag>1){x/=mag;y/=mag}
+ joyX=x;joyY=y;
+ joyThumb.style.transform=`translate(-50%,-50%) translate(${(x*radius).toFixed(1)}px,${(y*radius).toFixed(1)}px)`;
+}
+function joyRelease(){
+ joyPointer=null;joyX=0;joyY=0;joyLast=0;
+ if(joyFrame){cancelAnimationFrame(joyFrame);joyFrame=0}
+ joyThumb.style.transform='translate(-50%,-50%) translate(0px,0px)';
+ joyPad.removeAttribute('aria-pressed');
+}
+function joyApply(dx,dy){
+ if(!P.data)return Promise.resolve();
+ const active=(P.layout&&P.layout.scene&&P.layout.scene.camera)||camera;
+ return Plotly.relayout(P,{'scene.camera':panCamera(active,dx,dy)});
+}
+function joyTick(now){
+ if(joyPointer===null)return;
+ joyFrame=requestAnimationFrame(joyTick);
+ if(joyLast===0){joyLast=now;return}
+ if(now-joyLast<45||joyBusy)return; // max ~22 Plotly updates / second
+ const seconds=Math.min(.10,(now-joyLast)/1000);joyLast=now;
+ if(Math.hypot(joyX,joyY)<.07||!P.data)return;
+ const eye=(P.layout&&P.layout.scene&&P.layout.scene.camera||camera).eye;
+ const distance=Math.hypot(eye.x,eye.y,eye.z);
+ const speed=.65*Math.max(.25,Math.min(3,distance/2.6));
+ joyBusy=true;
+ Promise.resolve(joyApply(joyX*speed*seconds,joyY*speed*seconds))
+  .catch(err=>console.warn('Joystick camera update:',err))
+  .finally(()=>{joyBusy=false});
+}
+function joyBegin(id,x,y){
+ if(joyPointer!==null)return;
+ joyPointer=id;joyVector(x,y);joyLast=0;
+ joyPad.setAttribute('aria-pressed','true');
+ if(!joyFrame)joyFrame=requestAnimationFrame(joyTick);
+}
+if(window.PointerEvent){
+ joyPad.addEventListener('pointerdown',e=>{
+  if(e.pointerType==='mouse'&&e.button!==0)return;
+  e.preventDefault();e.stopPropagation();joyBegin(e.pointerId,e.clientX,e.clientY);
+  if(joyPad.setPointerCapture)joyPad.setPointerCapture(e.pointerId);
+ },{passive:false});
+ joyPad.addEventListener('pointermove',e=>{
+  if(e.pointerId!==joyPointer)return;
+  e.preventDefault();e.stopPropagation();joyVector(e.clientX,e.clientY);
+ },{passive:false});
+ const end=e=>{if(e.pointerId===joyPointer){e.preventDefault();joyRelease()}};
+ joyPad.addEventListener('pointerup',end,{passive:false});
+ joyPad.addEventListener('pointercancel',end,{passive:false});
+ joyPad.addEventListener('lostpointercapture',e=>{if(e.pointerId===joyPointer)joyRelease()});
+}else{ // Older WebKit: touch events as a fallback, never both paths at once.
+ joyPad.addEventListener('touchstart',e=>{
+  if(joyPointer!==null||!e.changedTouches.length)return;
+  const t=e.changedTouches[0];e.preventDefault();e.stopPropagation();joyBegin(t.identifier,t.clientX,t.clientY);
+ },{passive:false});
+ joyPad.addEventListener('touchmove',e=>{
+  for(const t of e.changedTouches)if(t.identifier===joyPointer){e.preventDefault();e.stopPropagation();joyVector(t.clientX,t.clientY);break}
+ },{passive:false});
+ const end=e=>{for(const t of e.changedTouches)if(t.identifier===joyPointer){joyRelease();break}};
+ joyPad.addEventListener('touchend',end,{passive:false});
+ joyPad.addEventListener('touchcancel',end,{passive:false});
+}
+joyPad.addEventListener('keydown',e=>{
+ const d={ArrowLeft:[-.12,0],ArrowRight:[.12,0],ArrowUp:[0,-.12],ArrowDown:[0,.12]}[e.key];
+ if(!d)return;e.preventDefault();joyApply(...d);
+});
+window.addEventListener('blur',joyRelease);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)joyRelease()});
+// Explicit two-finger gesture: do not depend on the Plotly pinch implementation.
+// The buttons above are the guaranteed fallback on iOS.
+let pinchPrevious=null;
+function touchDistance(e){
+ if(e.touches.length<2)return null;
+ const a=e.touches[0],b=e.touches[1];
+ return Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);
+}
+P.addEventListener('touchstart',e=>{
+ if(e.touches.length>=2){pinchPrevious=touchDistance(e);e.preventDefault();e.stopPropagation();}
+},{capture:true,passive:false});
+P.addEventListener('touchmove',e=>{
+ if(pinchPrevious===null||e.touches.length<2)return;
+ const current=touchDistance(e);
+ if(current&&current>0&&pinchPrevious>0){
+  const factor=pinchPrevious/current;
+  if(Math.abs(Math.log(factor))>=.06){zoomBy(factor);pinchPrevious=current;}
+ }
+ e.preventDefault();e.stopPropagation();
+},{capture:true,passive:false});
+for(const eventName of ['touchend','touchcancel'])P.addEventListener(eventName,e=>{
+ if(e.touches.length<2)pinchPrevious=null;
+},{capture:true,passive:false});
+function updateVis(){if(!P.data)return;Plotly.restyle(P,{visible:metadata.map(visible)},metadata.map((_,i)=>i))}
+function updateOpacity(){const idx=[];for(let i=0;i<metadata.length;i++)if(metadata[i].type==='mesh')idx.push(i);
+ if(idx.length)Plotly.restyle(P,{opacity:idx.map(()=>options.opacity)},idx)}
+function view(name){if(!P.data)return;Plotly.relayout(P,{'scene.camera':views[name]});
+ document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===name))}
+function reset(){options.solo=null;groups.forEach(g=>g.hidden=false);options.selected=null;$('selection').hidden=true;
+ if(P.data)Plotly.relayout(P,{'scene.xaxis.range':bounds.x,'scene.yaxis.range':bounds.y,
+ 'scene.zaxis.range':bounds.z,'scene.camera':camera});updateVis();closeSheet()}
+function focus(gid){const g=byId[gid];if(!g||!g.bounds||g.bounds[0]>1e11)return;
+ const b=g.bounds;const pad=Math.max(16,Math.max(b[3]-b[0],b[4]-b[1],b[5]-b[2])*.19);
+ if(P.data)Plotly.relayout(P,{'scene.xaxis.range':[b[0]-pad,b[3]+pad],
+ 'scene.yaxis.range':[b[1]-pad,b[4]+pad],'scene.zaxis.range':[b[2]-pad,b[5]+pad]})}
+function selection(gid,zoom=false){const g=byId[gid];if(!g)return;
+ options.selected=gid;$('selection').hidden=false;$('solo').disabled=false;
+ $('selName').textContent=g.name;
+ $('selMeta').textContent=`${fmt(g.length,1)} m · ${fmt(g.shots)} tratte${g.minZ==null?'':` · Z ${fmt(g.minZ)}–${fmt(g.maxZ)} m`}`;
+ $('solo').textContent=options.solo===gid?'Mostra tutti':'Isola';
+ $('solo').classList.toggle('active',options.solo===gid);
+ if(zoom)focus(gid);
+}
+function renderList(){const q=$('search').value.trim().toLocaleLowerCase('it');const wrap=$('items');wrap.replaceChildren();
+ const rows=groups.filter(g=>(g.name+' '+g.code).toLocaleLowerCase('it').includes(q));
+ if(!rows.length){const e=document.createElement('p');e.className='empty';e.textContent='Nessun risultato';wrap.append(e);return}
+ // Limit DOM nodes while typing; the underlying geometries remain in the 3D scene.
+ for(const g of rows.slice(0,250)){
+  const b=document.createElement('button');b.className='item';b.type='button';
+  const dot=document.createElement('span');dot.className='symbol '+(g.kind||'all');
+  const t=document.createElement('span');t.className='itemname';const name=document.createElement('strong');name.textContent=g.name;
+  const sub=document.createElement('small');sub.textContent=fmt(g.length,1)+' m · '+fmt(g.shots)+' tratte';t.append(name,sub);
+  const arr=document.createElement('span');arr.className='arr';arr.textContent='›';b.append(dot,t,arr);
+  b.addEventListener('click',()=>{selection(g.id,true);closeSheet()});wrap.append(b)
+ }
+ if(rows.length>250){const note=document.createElement('p');note.className='hint';note.textContent='Mostrati i primi 250 risultati. Usa la ricerca per restringere.';wrap.append(note)}
+}
+let current=null;
+const titles={browse:'Esplora i rilievi',layers:'Livelli',view:'Vista'};
+function openSheet(tab){if(current===tab){closeSheet();return}current=tab;
+ $('sheetTitle').textContent=titles[tab];document.querySelectorAll('[data-pane]').forEach(el=>el.hidden=el.dataset.pane!==tab);
+ document.querySelectorAll('[data-tab]').forEach(el=>el.classList.toggle('active',el.dataset.tab===tab));
+ $('sheet').classList.add('open');$('scrim').classList.add('open');
+ if(tab==='browse'){renderList();setTimeout(()=>$('search').focus({preventScroll:true}),180)}
+}
+function closeSheet(){current=null;$('sheet').classList.remove('open');$('scrim').classList.remove('open');
+ document.querySelectorAll('[data-tab]').forEach(el=>el.classList.remove('active'));$('search').blur()}
+for(const tab of document.querySelectorAll('[data-tab]'))tab.addEventListener('click',()=>openSheet(tab.dataset.tab));
+$('closeSheet').addEventListener('click',closeSheet);$('scrim').addEventListener('click',closeSheet);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
+$('search').addEventListener('input',renderList);
+const links=[['meshes','mesh'],['lines','lines'],['contours','contours'],['entrances','entrances']];
+for(const [id,key] of links){$(id).checked=options[key];$(id).addEventListener('change',e=>{options[key]=e.target.checked;updateVis()})}
+$('interval').value=String(options.interval);$('interval').addEventListener('change',e=>{options.interval=Number(e.target.value);updateVis()});
+$('opacity').value=String(Math.round(options.opacity*100));$('opacityValue').textContent=Math.round(options.opacity*100)+'%';
+$('opacity').addEventListener('input',e=>{options.opacity=Number(e.target.value)/100;
+ $('opacityValue').textContent=e.target.value+'%';updateOpacity()});
+$('intervalRow').hidden=!terrain.present;$('contours').disabled=!terrain.present;
+for(const [kind,element,row] of [['all','neutral','allRow'],['cave','caves','caveRow'],['mine','mines','mineRow']]){
+ if(!categories[kind])continue;
+ $(row).hidden=false;$('categoryControls').hidden=false;
+ $(element).addEventListener('change',e=>{options.kinds[kind]=e.target.checked;updateVis()});
+}
+if(Object.values(categories).filter(Boolean).length<=1)$('categoryControls').hidden=true;
+for(const b of document.querySelectorAll('[data-view]'))b.addEventListener('click',()=>view(b.dataset.view));
+for(const b of document.querySelectorAll('[data-z]'))b.addEventListener('click',()=>{
+ options.exag=Number(b.dataset.z);document.querySelectorAll('[data-z]').forEach(x=>x.classList.toggle('active',x===b));
+ if(P.data)Plotly.relayout(P,{'scene.aspectratio':aspect()})});
+$('navReset').addEventListener('click',reset);$('resetTop').addEventListener('click',reset);$('fitScene').addEventListener('click',reset);
+$('dismissSelection').addEventListener('click',()=>{$('selection').hidden=true;options.selected=null});
+$('solo').addEventListener('click',()=>{if(options.selected===null)return;options.solo=options.solo===options.selected?null:options.selected;
+ selection(options.selected,false);updateVis()});
+$('summary').textContent=`${fmt(groups.length)} rilievi · ${fmt(D.meta.stats.shots)} tratte`;
+$('loadInfo').textContent=`${fmt(D.meta.stats.mesh_faces)} triangoli · ${fmt(terrain.contour_fragments||0)} isoipse`;
+const tip=$('tip');P.addEventListener('pointerdown',()=>{tip.style.display='none'},{once:true});
+if(!window.Plotly||typeof Plotly.newPlot!=='function'){
+ $('loading').innerHTML='<div class="error">Libreria grafica non disponibile.</div>';return}
+Plotly.newPlot(P,assets,layout,config).then(()=>{
+ $('loading').hidden=true;
+ P.on('plotly_click',ev=>{
+  const point=ev.points&&ev.points[0];if(!point)return;
+  const m=metadata[point.curveNumber];if(!m)return;
+  if(m.gid!==undefined)selection(m.gid,false);
+  else if(m.type==='entrance'){
+   const e=D.entrances[point.pointNumber];if(e){$('selection').hidden=false;
+    $('selName').textContent=e.name;$('selMeta').textContent=`E ${fmt(e.east,1)} · N ${fmt(e.north,1)} · Z ${fmt(e.z,1)} m`;
+    options.selected=null;$('solo').textContent='Ingresso';$('solo').disabled=true}
+  }else{$('solo').disabled=false}
+ });
+}).catch(err=>{$('loading').innerHTML='';const e=document.createElement('p');e.className='error';
+ e.textContent='Impossibile avviare il modello 3D: '+String(err&&err.message||err);$('loading').append(e);console.error(err)});
+window.addEventListener('resize',()=>{if(P.data)Plotly.Plots.resize(P)});
+})();
+</script>
+</body>
+</html>

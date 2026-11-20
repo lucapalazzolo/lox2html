@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark"><title>__HTML_TITLE__ | Atlante 3D ipogeo</title>
+<style>
+:root{--bg:#07111d;--surface:#0e1b2a;--surface2:#132338;--line:#26374b;--muted:#93a7ba;--text:#e6f2fa;--cave:#46c9cf;--mine:#efac66;--accent:#8dbecf}
+*{box-sizing:border-box}html,body{height:100%;width:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:13px}
+.app{height:100%;width:100%;display:grid;grid-template-columns:330px minmax(0,1fr);grid-template-rows:64px minmax(0,1fr) 34px}
+.header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:0 22px;background:#091524;gap:15px;z-index:4}
+.brand{display:flex;gap:15px;align-items:center;min-width:0}.logo{width:34px;height:34px;border:1px solid #4d8e9d;border-radius:9px;display:grid;place-items:center;background:#0b2b39;color:#80d6dd;font-size:17px;font-weight:900;transform:rotate(-3deg)}.eyebrow{font-size:10px;letter-spacing:.19em;color:#78a4b1;font-weight:760;text-transform:uppercase}.title{font-size:20px;font-weight:750;letter-spacing:-.05em;line-height:1.25}.subtitle{font-size:11px;color:var(--muted);margin-top:2px}.header-right{display:flex;align-items:center;gap:15px}.source-chip{border:1px solid #2a4355;border-radius:30px;padding:7px 10px;font-size:10px;color:#a5c4d3;white-space:nowrap}.btn{border:1px solid #365066;background:#132b41;color:#d6edf5;border-radius:7px;padding:9px 13px;cursor:pointer;font-size:11px;font-weight:680;letter-spacing:.01em}.btn:hover{background:#1c3b56;border-color:#6c9dad}.btn:focus-visible,.ghost:focus-visible,.item:focus-visible{outline:2px solid #63cad8;outline-offset:2px}.btn.primary{background:#184556;border-color:#397b91}.btn.small{padding:7px 10px}.btn.active{background:#23556b;border-color:#64a0b9;color:#fff}
+.sidebar{background:var(--surface);border-right:1px solid var(--line);min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:#38566c transparent}.section{border-bottom:1px solid var(--line);padding:17px 20px}.section h2{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#c5d5e0;margin:0 0 14px;font-weight:800}.section h2 span{color:var(--muted);font-size:10px;letter-spacing:0;text-transform:none;font-weight:500;float:right}.srow{display:flex;align-items:center;gap:9px;justify-content:space-between;padding:6px 0}.srow label{display:flex;align-items:center;gap:10px;color:#c5d4df;cursor:pointer;min-width:0}.srow label span{min-width:0}.srow .count{color:#6f879a;font-size:11px}.srow input[type=checkbox],.item input{accent-color:#55c3d0;width:15px;height:15px;cursor:pointer}.color-dot{height:9px;width:9px;border-radius:50%;display:inline-block;flex-shrink:0}.secondary{color:var(--muted)}.controlLabel{display:flex;justify-content:space-between;color:#b7cbd7;margin:12px 0 8px;font-size:12px}.controlLabel strong{font-size:11px;color:#e1f4fb}.select,input[type=search]{background:#0b1a29;border:1px solid #30465a;color:#e1eff7;border-radius:7px;padding:9px 11px;width:100%;font-size:12px;outline:none}input[type=search]:focus,.select:focus{border-color:#61a5b7}.range{width:100%;accent-color:#5ebbd2;cursor:pointer}.seg{display:flex;gap:5px;margin-top:5px}.seg .btn{flex:1;padding:8px 5px}.note{font-size:10px;color:#8ea4b7;line-height:1.55;margin:9px 0 0}.catalog{padding:14px 13px 24px}.catalog-header{padding:0 7px 13px;display:flex;align-items:center;justify-content:space-between}.catalog-header h2{margin:0;text-transform:uppercase;letter-spacing:.12em;font-size:11px}.catalog-header small{color:var(--muted)}.group-label{padding:15px 8px 7px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#89a3b6;font-weight:760;display:flex;justify-content:space-between}.group-label span{font-weight:500}.items{display:flex;flex-direction:column;gap:3px}.item{width:100%;padding:9px 10px;display:flex;align-items:center;gap:9px;text-align:left;background:transparent;color:#b6c9d7;border:1px solid transparent;border-radius:7px;cursor:pointer;font:inherit}.item:hover{background:#172c40}.item.active{background:#18384a;border-color:#386276;color:#edfcff}.item .label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.item .length{font-size:10px;color:#7f97ab;font-variant-numeric:tabular-nums}.item .swatch{height:5px;width:5px;border-radius:50%;background:var(--cave)}.item.mine .swatch{background:var(--mine)}.item input{flex-shrink:0}
+.main{position:relative;background:radial-gradient(ellipse at center,#112337 0%,#081523 75%);min-width:0;min-height:0;overflow:hidden}#plot{position:absolute;inset:0;width:100%;height:100%}.overlay-top{position:absolute;left:20px;top:17px;pointer-events:none;display:flex;gap:7px;flex-direction:column;z-index:2}.over-title{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#a3c5d3;font-weight:780}.over-desc{font-size:11px;color:#7f9aac}.over-desc b{color:#c8dce8;font-weight:650}.controls{position:absolute;right:20px;top:18px;z-index:2;display:flex;gap:6px}.controls button{backdrop-filter:blur(4px)}.legend{position:absolute;left:20px;bottom:17px;border:1px solid #294254;background:rgba(8,22,37,.88);border-radius:9px;padding:12px 14px;pointer-events:none;max-width:235px;z-index:2}.legend-title{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#94adbd;font-weight:750;margin-bottom:8px}.legend-row{display:flex;align-items:center;gap:8px;font-size:10px;color:#b2c8d6;margin-top:6px}.legend-dash{width:21px;height:2px;background:#45697b}.legend-dash.major{height:3px;background:#9fb8c6}.legend .color-dot{width:8px;height:8px}.selected-panel{position:absolute;bottom:17px;right:20px;border:1px solid #345166;border-radius:10px;background:rgba(7,22,37,.91);min-width:245px;max-width:300px;padding:15px 16px;z-index:2}.selected-eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:#91b0c1}.selected-name{font-size:15px;font-weight:740;margin:5px 0 12px;line-height:1.3}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat-val{font-size:17px;font-weight:780;font-variant-numeric:tabular-nums}.stat-label{font-size:10px;color:#8ca5b9;margin-top:2px}.selected-actions{display:flex;gap:5px;margin-top:14px}.selected-actions .btn{flex:1}.footer{grid-column:1/-1;background:#091524;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;color:#8fa6b8;padding:0 18px;font-size:10px;gap:14px}.footer span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pill{display:inline-block;border-radius:99px;background:#0d3341;border:1px solid #326779;color:#80dae2;padding:3px 6px;font-size:9px;font-weight:780;letter-spacing:.06em}.loading{position:absolute;inset:0;display:flex;flex-direction:column;gap:13px;align-items:center;justify-content:center;background:rgba(7,17,29,.98);z-index:3;color:#d8edf4;font-size:14px}.spinner{width:30px;height:30px;border:2px solid #223d4d;border-top-color:#6ad4dd;border-radius:50%;animation:rot 1s linear infinite}@keyframes rot{to{transform:rotate(360deg)}}#loadStatus{color:#829eaf;font-size:11px}.error{padding:17px;color:#ffb4a4;background:#421e25;border:1px solid #b35265;max-width:500px;border-radius:8px}
+@media(max-width:850px){.app{grid-template-columns:255px minmax(0,1fr)}.header-right .source-chip{display:none}.title{font-size:17px}.section{padding:14px 13px}.selected-panel{bottom:10px;right:10px;min-width:195px}.legend{display:none}.controls{right:10px;top:10px}.controls .btn{font-size:10px;padding:7px 8px}}
+@media(max-width:600px){.app{grid-template-columns:1fr;grid-template-rows:54px minmax(0,1fr) 31px}.sidebar{position:absolute;bottom:31px;left:0;z-index:4;width:min(84vw,320px);height:74%;transform:translateX(-100%);transition:transform .2s;box-shadow:5px 0 24px #0009}.sidebar.open{transform:translateX(0)}.header{padding:0 12px}.logo{display:none}.subtitle{display:none}.header-right{gap:7px}.header .btn{padding:7px 9px}.main{grid-row:2}.footer{grid-row:3}.controls .btn:nth-child(2){display:none}.selected-panel{bottom:9px;right:9px;padding:10px}.over-title{display:none}.over-desc{display:none}.footer span:nth-child(2){display:none}}
+</style>
+<script>/*__PLOTLY_JS__*/</script>
+<script id="model-json" type="application/json">/*__MODEL_JSON__*/</script>
+</head>
+<body>
+<div class="app">
+<header class="header"><div class="brand"><div class="logo">3D</div><div><div class="eyebrow">Atlante ipogeo · offline</div><div class="title">__HTML_TITLE__ <span style="font-weight:400;color:#7d99aa">/</span> Modello 3D</div><div class="subtitle">Modello LOX · Grotte e miniere · Curve di livello vettoriali</div></div></div><div class="header-right"><span class="source-chip">FILE LOX VERIFICATO <span style="color:#66cace">●</span> · OFFLINE</span><button class="btn small" id="menuBtn" style="display:none">☰ Livelli</button><button class="btn primary" id="savePNG">↓ Esporta PNG</button></div></header>
+<aside class="sidebar" id="sidebar">
+  <div class="section"><h2>Livelli <span>visibilità</span></h2>
+    <div class="srow"><label><input id="toggleCaves" type="checkbox" checked><i class="color-dot" style="background:var(--cave)"></i><span>Grotte / rilievi</span></label><span id="countCaves" class="count">—</span></div>
+    <div class="srow"><label><input id="toggleMines" type="checkbox" checked><i class="color-dot" style="background:var(--mine)"></i><span>Miniere</span></label><span id="countMines" class="count">—</span></div>
+    <div class="srow"><label><input id="toggleMeshes" type="checkbox" checked><span>Volumi 3D</span></label></div>
+    <div class="srow"><label><input id="toggleLines" type="checkbox" checked><span>Poligonali interne</span></label></div>
+    <div class="srow"><label><input id="toggleContours" type="checkbox" checked><span>Curve di livello</span></label><span class="count">DTM</span></div>
+    <div class="srow"><label><input id="toggleEntrances" type="checkbox" checked><span>Ingressi</span></label><span id="countEnt" class="count">—</span></div>
+  </div>
+  <div class="section"><h2>Rappresentazione</h2>
+    <div class="controlLabel"><span>Equidistanza delle isoipse</span><strong id="contourReadout">20 m</strong></div>
+    <div class="seg" id="contourInterval"><button class="btn small" data-val="10">10 m</button><button class="btn small active" data-val="20">20 m</button><button class="btn small" data-val="50">50 m</button></div>
+    <div class="controlLabel"><span>Opacità volumi</span><strong id="opacityValue">55%</strong></div><input class="range" id="meshOpacity" type="range" min="15" max="95" step="5" value="55">
+    <div class="controlLabel"><span>Esagerazione verticale</span><strong id="exagValue">1×</strong></div><input class="range" id="exag" type="range" min="1" max="3" step="0.25" value="1">
+    <p class="note"><span id="terrainNote">Il raster e le texture originali non vengono incorporati. Le curve sono estratte dal LOX solo quando il terreno esiste.</span></p>
+  </div>
+  <div class="catalog"><div class="catalog-header"><h2>Rilievi</h2><small id="totalGroups">—</small></div><input type="search" id="filter" aria-label="Cerca rilievi" placeholder="Cerca una grotta o una miniera…"><div id="surveyList"></div></div>
+</aside>
+<main class="main">
+  <div id="plot" role="img" aria-label="Visualizzazione tridimensionale interattiva di grotte, miniere e curve di livello del modello LOX"></div>
+  <div class="overlay-top"><div class="over-title">Rilievi 3D e isoipse</div><div class="over-desc"><b id="shotNumber">—</b> tratte · <b id="vertexNumber">—</b> vertici delle mesh · CRS <span id="crsLabel">non dichiarato</span></div></div>
+  <div class="controls"><button class="btn active" id="view3d" title="Vista prospettica">3D</button><button class="btn" id="viewTop" title="Vista dall'alto">Pianta</button><button class="btn" id="viewSide" title="Vista laterale">Sezione</button><button class="btn" id="resetView">↺ Centra</button></div>
+  <div class="legend"><div class="legend-title">Legenda</div><div class="legend-row"><i class="color-dot" style="background:var(--cave)"></i> Cavità naturali</div><div class="legend-row"><i class="color-dot" style="background:var(--mine)"></i> Gallerie minerarie</div><div class="legend-row"><i class="color-dot" style="background:#ecde91"></i> Ingressi</div><div class="legend-row"><i class="legend-dash major"></i> Isoipse direttrici (100 m)</div><div class="legend-row"><i class="legend-dash"></i> Isoipse intermedie</div></div>
+  <div class="selected-panel" id="selection" style="display:none"><div class="selected-eyebrow" id="selCategory">Rilievo</div><div class="selected-name" id="selName">—</div><div class="stats"><div><div class="stat-val" id="selLength">—</div><div class="stat-label">m, somma tratte</div></div><div><div class="stat-val" id="selShots">—</div><div class="stat-label">Tratte</div></div><div><div class="stat-val" id="selZ">—</div><div class="stat-label">Quota min.–max.</div></div><div><div class="stat-val" id="selMesh">—</div><div class="stat-label">Triangoli volume</div></div></div><div class="selected-actions"><button class="btn small" id="focusSelected">Inquadra</button><button class="btn small" id="soloSelected">Isola</button><button class="btn small" id="closeSelected" title="Chiudi">×</button></div></div>
+  <div class="loading" id="loading"><span class="spinner"></span><span>Preparazione della scena 3D</span><span id="loadStatus">Geometrie, isoipse e metadati incorporati nel file</span></div>
+</main>
+<footer class="footer"><span>Fonte: <b id="sourceFile">—</b> · Geometria LOX non alterata</span><span id="pointerInfo">Rotazione: trascina · Zoom: rotella · Pan: trascina con tasto destro</span><span class="pill">STANDALONE / NESSUNA RETE</span></footer>
+</div>
+<script>
+(()=>{'use strict';
+const D=JSON.parse(document.getElementById('model-json').textContent);
+const $=id=>document.getElementById(id), P=$('plot');
+const origin=D.meta.origin, terrain=D.meta.terrain;
+const gById=Object.fromEntries(D.groups.map(g=>[g.id,g]));
+const options={caves:true,mines:true,mesh:true,lines:true,contours:true,entrances:true,interval:20,opacity:.55,exag:1,solo:null,selected:null};
+const nfmt=n=>Number(n).toLocaleString('it-IT',{maximumFractionDigits:0});
+const traceMeta=[],traces=[];
+const add=(trace,meta)=>{traces.push(trace);traceMeta.push(meta)};
+const meshColor={cave:'#47cbd2',mine:'#f1ae68'};
+const lineColor={cave:'#a3f4eb',mine:'#ffd2a1'};
+function surfaceColors(kind,type){let base=meshColor[kind];return type==='estimated'?(kind==='cave'?'#69a8f7':'#f5bd92'):base;}
+for(const a of D.geometry){
+ let trace;
+ if(a.type==='mesh'){
+  trace={type:'mesh3d',name:a.name,x:a.x,y:a.y,z:a.z,i:a.i,j:a.j,k:a.k,
+   color:surfaceColors(a.kind,a.confidence),opacity:options.opacity,flatshading:false,
+   lighting:{ambient:.68,diffuse:.58,roughness:.9,specular:.08,fresnel:.08},
+   lightposition:{x:50,y:100,z:2400},hoverinfo:'skip',showlegend:false};
+ }else{
+  trace={type:'scatter3d',mode:'lines',name:a.name,x:a.x,y:a.y,z:a.z,
+   line:{color:lineColor[a.kind],width:a.kind==='cave'?3:2.7},hoverinfo:'skip',showlegend:false,
+   connectgaps:false};
+ }
+ add(trace,{type:a.type,gid:a.gid,kind:a.kind});
+}
+const contourStyle={100:{color:'#94afbd',width:3.2},50:{color:'#6b8798',width:2.1},20:{color:'#496473',width:1.4},10:{color:'#334b59',width:1}};
+for(const c of D.contours){add({type:'scatter3d',mode:'lines',name:`Isoipse ${c.tier}`,x:c.x,y:c.y,z:c.z,
+  line:contourStyle[c.tier],connectgaps:false,hoverinfo:'skip',showlegend:false},
+  {type:'contour',tier:Number(c.tier)});}
+if(terrain.labels&&terrain.labels.length){
+ let l=terrain.labels;add({type:'scatter3d',mode:'text',x:l.map(a=>a[0]),y:l.map(a=>a[1]),z:l.map(a=>a[2]+1),
+   text:l.map(a=>String(a[2])),textposition:'middle center',textfont:{size:10,color:'#a9c9d8'},showlegend:false,hoverinfo:'skip'},
+   {type:'contourLabel'});
+}
+if(D.entrances.length){add({type:'scatter3d',mode:'markers',name:'Ingressi',
+  x:D.entrances.map(e=>e.x),y:D.entrances.map(e=>e.y),z:D.entrances.map(e=>e.z),
+  text:D.entrances.map(e=>`<b>${e.name}</b><br>${e.comment}<br>E ${e.east.toFixed(1)} · N ${e.north.toFixed(1)} · Z ${e.z.toFixed(1)} m`),
+  hovertemplate:'%{text}<extra></extra>',marker:{size:4,color:'#f5dc86',symbol:'diamond',line:{color:'#101c2c',width:.7}},
+  showlegend:false},{type:'entrance'});}
+function enabled(meta){
+ if(meta.type==='contour'||meta.type==='contourLabel'){
+   if(!options.contours||!terrain.present)return false;
+   if(meta.type==='contourLabel')return true;
+   return options.interval===10||meta.tier===100||(options.interval===20&&meta.tier===20)||(options.interval===50&&meta.tier===50);
+ }
+ if(meta.type==='entrance')return options.entrances;
+ if(meta.kind==='cave'&&!options.caves)return false;
+ if(meta.kind==='mine'&&!options.mines)return false;
+ if(options.solo!==null&&meta.gid!==options.solo)return false;
+ let g=gById[meta.gid]; if(g&&g.hidden)return false;
+ if(meta.type==='mesh')return options.mesh;
+ if(meta.type==='line')return options.lines;
+ return true;
+}
+const initialVis=traceMeta.map(enabled);traces.forEach((tr,i)=>tr.visible=initialVis[i]);
+const xx=[],yy=[];
+if(terrain.present){const c=terrain.calibration;xx.push(c[0]-origin[0],c[0]+(terrain.width-1)*c[2]+(terrain.height-1)*c[3]-origin[0]);
+ yy.push(c[1]-origin[1],c[1]+(terrain.width-1)*c[4]+(terrain.height-1)*c[5]-origin[1]);}
+for(const g of D.groups){if(g.bounds[0]<1e11){xx.push(g.bounds[0],g.bounds[3]); yy.push(g.bounds[1],g.bounds[4]);}}
+const zz=[];
+for(const g of D.groups){if(g.minZ!==null&&Number.isFinite(g.minZ))zz.push(g.minZ,g.maxZ);}
+if(terrain.present)zz.push(terrain.min_elevation,terrain.max_elevation);
+for(const e of D.entrances){xx.push(e.x);yy.push(e.y);zz.push(e.z);}
+function extent(values){if(!values.length)return[-50,50];const lo=Math.min(...values),hi=Math.max(...values);return hi-lo<1e-6?[lo-50,hi+50]:[lo,hi];}
+const bounds={x:extent(xx),y:extent(yy),z:extent(zz)};
+const spanXY=Math.max(1,bounds.x[1]-bounds.x[0],bounds.y[1]-bounds.y[0]),spanZ=Math.max(1,bounds.z[1]-bounds.z[0]);
+const axis=(label,range)=>({title:{text:label,font:{size:11,color:'#a9becb'}},range,
+  gridcolor:'#26374a',zerolinecolor:'#33495b',showbackground:true,backgroundcolor:'#0d1c2b',
+  tickfont:{size:10,color:'#8aa3b6'},ticks:'outside',showspikes:false});
+const c3d={eye:{x:1.75,y:-1.85,z:1.12},up:{x:0,y:0,z:1},center:{x:0,y:0,z:0}};
+const initial={x:[...bounds.x],y:[...bounds.y],z:[...bounds.z]};
+const scene={xaxis:axis(`E − ${nfmt(origin[0])} (m)`,initial.x),yaxis:axis(`N − ${nfmt(origin[1])} (m)`,initial.y),
+ zaxis:axis('${D.meta.z_label}',initial.z),aspectmode:'manual',
+ aspectratio:{x:(bounds.x[1]-bounds.x[0])/spanXY,y:(bounds.y[1]-bounds.y[0])/spanXY,z:spanZ/spanXY*options.exag},
+ camera:c3d,bgcolor:'#0c1a2a',dragmode:'orbit',uirevision:'lox-camera'};
+const layout={paper_bgcolor:'#091727',plot_bgcolor:'#091727',margin:{l:0,r:0,t:0,b:0},showlegend:false,
+ scene,hoverlabel:{bgcolor:'#102b3a',font:{color:'#e3f4fb',size:12}},uirevision:'lox-view'};
+const cfg={responsive:true,displayModeBar:false,scrollZoom:true,showTips:false,plotGlPixelRatio:Math.min(window.devicePixelRatio||1,2)};
+function refresh(){let vis=traceMeta.map(enabled);Plotly.restyle(P,{visible:vis},traces.map((_,i)=>i));renderList(false);}
+function recolor(){let indexes=[],values=[];
+ for(let i=0;i<traces.length;i++)if(traceMeta[i].type==='mesh'){indexes.push(i);values.push(options.opacity);}
+ if(indexes.length)Plotly.restyle(P,{opacity:values},indexes);
+}
+function aspect(){Plotly.relayout(P,{'scene.aspectratio':{x:(bounds.x[1]-bounds.x[0])/spanXY,y:(bounds.y[1]-bounds.y[0])/spanXY,z:spanZ/spanXY*options.exag}});}
+function reset(){options.solo=null;for(const g of D.groups)g.hidden=false;
+ Plotly.relayout(P,{'scene.xaxis.range':initial.x,'scene.yaxis.range':initial.y,'scene.zaxis.range':initial.z,'scene.camera':c3d});
+ updateSolo();refresh();}
+function setCamera(name){
+ const views={view3d:{eye:{x:1.75,y:-1.85,z:1.12},up:{x:0,y:0,z:1}},
+ viewTop:{eye:{x:0,y:0,z:2.8},up:{x:0,y:1,z:0}},
+ viewSide:{eye:{x:0,y:-2.8,z:.15},up:{x:0,y:0,z:1}}};
+ const cam=views[name];Plotly.relayout(P,{'scene.camera':cam});
+ for(const k of Object.keys(views))$(k).classList.toggle('active',name===k);
+}
+function focus(gid){const g=gById[gid];if(!g||g.bounds[0]>1e11)return;
+ const b=g.bounds,delta=Math.max(45,Math.max(b[3]-b[0],b[4]-b[1],b[5]-b[2]));
+ const pad=Math.max(30,delta*.25);let xr=[b[0]-pad,b[3]+pad],yr=[b[1]-pad,b[4]+pad],zr=[b[2]-pad,b[5]+pad];
+ Plotly.relayout(P,{'scene.xaxis.range':xr,'scene.yaxis.range':yr,'scene.zaxis.range':zr});
+}
+function selected(gid,doFocus=false){const g=gById[gid];if(!g)return;options.selected=gid;
+ $('selection').style.display='block';$('selCategory').textContent=g.kind==='cave'?'Grotta / rilievo · '+g.code:'Galleria mineraria · '+g.code;
+ $('selName').textContent=g.name;$('selLength').textContent=nfmt(g.length);$('selShots').textContent=nfmt(g.shots);
+ $('selZ').textContent=`${g.minZ===null?'—':nfmt(g.minZ)}–${g.maxZ===null?'—':nfmt(g.maxZ)}`;
+ $('selMesh').textContent=nfmt(g.triangles);$('soloSelected').textContent=options.solo===gid?'Mostra tutte':'Isola';
+ renderList(false);if(doFocus)focus(gid);
+}
+function updateSolo(){$('soloSelected').textContent=options.solo===options.selected?'Mostra tutte':'Isola';}
+function makeItem(g){let btn=document.createElement('div');btn.className='item '+(g.kind==='mine'?'mine ':'')+(options.selected===g.id?'active':'');
+ const check=document.createElement('input');check.type='checkbox';check.checked=!g.hidden;check.setAttribute('aria-label','Visibilità: '+g.name);
+ check.addEventListener('change',()=>{g.hidden=!check.checked;refresh()});
+ const dot=document.createElement('span');dot.className='swatch';
+ const label=document.createElement('span');label.className='label';label.textContent=g.name;label.title=g.name;
+ const len=document.createElement('span');len.className='length';len.textContent=nfmt(g.length)+' m';
+ btn.append(check,dot,label,len);btn.addEventListener('click',ev=>{if(ev.target===check)return;selected(g.id,true)});
+ return btn;
+}
+function renderList(rebuild=true){const list=$('surveyList');if(!rebuild&&document.activeElement===$('filter'))return;
+ const value=$('filter').value.trim().toLocaleLowerCase('it');list.replaceChildren();
+ for(const kind of ['cave','mine']){
+  const rows=D.groups.filter(g=>g.kind===kind&&(g.name+' '+g.code).toLocaleLowerCase('it').includes(value));
+  if(!rows.length)continue;const heading=document.createElement('div');heading.className='group-label';
+  heading.textContent=kind==='cave'?'GROTTE / RILIEVI':'MINIERE';
+  const count=document.createElement('span');count.textContent=rows.length;heading.append(count);list.append(heading);
+  const block=document.createElement('div');block.className='items';for(const g of rows)block.append(makeItem(g));list.append(block);
+ }
+ if(!list.children.length){let p=document.createElement('p');p.className='note';p.textContent='Nessun rilievo corrisponde alla ricerca.';list.append(p)}
+}
+function wire(){
+ for(const [el,key] of [['toggleCaves','caves'],['toggleMines','mines'],['toggleMeshes','mesh'],['toggleLines','lines'],['toggleContours','contours'],['toggleEntrances','entrances']]){
+ $(el).addEventListener('change',e=>{options[key]=e.target.checked;refresh()});}
+ $('filter').addEventListener('input',()=>renderList(true));
+ for(const btn of $('contourInterval').querySelectorAll('button'))btn.addEventListener('click',()=>{
+ options.interval=Number(btn.dataset.val);$('contourReadout').textContent=btn.dataset.val+' m';
+ for(const b of $('contourInterval').querySelectorAll('button'))b.classList.toggle('active',b===btn);refresh();
+ });
+ $('meshOpacity').addEventListener('input',e=>{options.opacity=Number(e.target.value)/100;$('opacityValue').textContent=e.target.value+'%';recolor()});
+ $('exag').addEventListener('input',e=>{options.exag=Number(e.target.value);$('exagValue').textContent=options.exag.toLocaleString('it')+'×';aspect()});
+ $('view3d').onclick=()=>setCamera('view3d');$('viewTop').onclick=()=>setCamera('viewTop');$('viewSide').onclick=()=>setCamera('viewSide');$('resetView').onclick=reset;
+ $('savePNG').onclick=()=>Plotly.downloadImage(P,{format:'png',width:1920,height:1200,filename:'lox_3d_isoipse'});
+ $('focusSelected').onclick=()=>focus(options.selected);
+ $('soloSelected').onclick=()=>{options.solo=options.solo===options.selected?null:options.selected;updateSolo();refresh()};
+ $('closeSelected').onclick=()=>{$('selection').style.display='none';options.selected=null;renderList()};
+ if(window.matchMedia('(max-width:600px)').matches){$('menuBtn').style.display='';$('menuBtn').onclick=()=>$('sidebar').classList.toggle('open')}
+}
+document.title=D.meta.title+' | Atlante 3D';
+$('crsLabel').textContent=D.meta.crs || 'non dichiarato';
+$('terrainNote').textContent=terrain.present?'Isoipse ricavate dal DTM incorporato nel LOX. Nessun raster o ortofoto viene incluso.':'Il LOX non contiene una superficie altimetrica utilizzabile. Isoipse non disponibili; nessuna quota e stata inventata.';
+$('sourceFile').textContent=D.meta.source+' · SHA256 '+D.meta.sha256.slice(0,12)+'…';
+$('shotNumber').textContent=nfmt(D.meta.stats.shots);$('vertexNumber').textContent=nfmt(D.meta.stats.mesh_vertices);
+$('countCaves').textContent=D.meta.stats.caves;$('countMines').textContent=D.meta.stats.mines;$('countEnt').textContent=D.meta.stats.entrances;$('totalGroups').textContent=D.meta.stats.sections+' rilievi';
+if(!terrain.present){$('toggleContours').checked=false;$('toggleContours').disabled=true;options.contours=false;}
+wire();renderList();
+$('loadStatus').textContent=`${D.meta.stats.mesh_faces.toLocaleString('it-IT')} triangoli · ${terrain.contour_fragments||0} tratti di isoipse · rendering WebGL locale`;
+Plotly.newPlot(P,traces,layout,cfg).then(()=>{
+ $('loading').style.display='none';
+ P.on('plotly_click',ev=>{if(!ev.points?.length)return;
+  const m=traceMeta[ev.points[0].curveNumber];if(m?.gid!==undefined)selected(m.gid,false);
+  else if(m?.type==='entrance'){
+    const e=D.entrances[ev.points[0].pointNumber];if(e)$('pointerInfo').textContent=`${e.name} · E ${e.east.toFixed(1)} · N ${e.north.toFixed(1)} · ${e.z.toFixed(1)} m s.l.m.`;
+  }
+ });
+}).catch(err=>{$('loading').innerHTML='<div class="error">Impossibile inizializzare la scena 3D: '+String(err.message||err)+'</div>';console.error(err)});
+window.addEventListener('resize',()=>Plotly.Plots.resize(P));
+})();
+</script>
+</body></html>

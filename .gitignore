@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.py[cod]
+.DS_Store
+output/*
+!output/.gitkeep
+*.log
+.pytest_cache/
+
+# Rilievi reali e HTML generati: restano solo in locale, non nel repository pubblico
+esempi/DOSSENA_*
+esempi/QA_*
+esempi/*.html
+*.lox
+!esempi/ESEMPIO_NO_DTM.lox
