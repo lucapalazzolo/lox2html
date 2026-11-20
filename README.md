@@ -109,3 +109,7 @@ Esegue il controllo di integrità, i test Python (conversione, raggruppamento, i
 - I comandi `--crs` e `--z-label` cambiano solo le etichette.
 - Il file HTML non contiene raster, ortofoto o texture del LOX.
 - Visualizzazione affidata a WebGL: su dispositivi molto datati o con poca memoria grafica i volumi 3D possono essere lenti; poligonali e isoipse restano utilizzabili.
+
+## Licenza
+
+Codice di LOX2HTML: licenza [MIT](LICENSE). Plotly.js (`vendor/plotly.min.js`) è distribuito con la propria licenza MIT, vedi [vendor/README_LICENSE.md](vendor/README_LICENSE.md).
